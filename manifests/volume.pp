@@ -18,7 +18,7 @@ define ebs::volume (
   $aws_region = inline_template("<%= @ec2_placement_availability_zone.gsub(/.$/,'') %>")
 
   exec { "EBS volume ${name}: obtaining the volume id":
-    command     => "aws ec2 describe-volumes --filters Name=availability-zone,Values=${ec2_placement_availability_zone} Name=status,Values=available Name='tag:${tag_key}',Values=${name} --query 'Volumes[*].{ID:VolumeId, State:State}' | grep 'ID' | cut -d':' -f 2 | tr -d ' \"' > ${volume_id_file}",
+    command     => "aws ec2 describe-volumes --filters Name=availability-zone,Values=${ec2_placement_availability_zone} Name=status,Values=available Name='tag:${tag_key}',Values=${name} --query 'Volumes[*].[VolumeId]' --output text > ${volume_id_file}",
     unless      => "test -s ${volume_id_file}",
     environment => "AWS_DEFAULT_REGION=${aws_region}"
   } ->
