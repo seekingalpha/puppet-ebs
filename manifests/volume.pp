@@ -14,7 +14,7 @@ define ebs::volume (
     path => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin'
   }
 
-  ebs::attach { "EBS volume ${name}: attaching ...":
+  ebs::attach { $name:
     device          => $device,
     device_attached => $device_attached,
     tag_key         => $tag_key,
