@@ -1,5 +1,5 @@
 class ebs (
-  $skip_awscli_install = false
+  $skip_awscli_install = true
 ) inherits ebs::params {
 
   if $skip_awscli_install == false {
