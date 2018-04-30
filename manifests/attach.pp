@@ -10,7 +10,7 @@ define ebs::attach (
     path => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin'
   }
 
-  $volume_id_file = "/var/lib/puppet/.ebs__${name}__volume_id"
+  $volume_id_file = "/tmp/.ebs__${name}__volume_id"
   $aws_zone = $::facts['ec2_metadata']['placement']['availability-zone']
   $aws_region = chop($aws_zone)
 
