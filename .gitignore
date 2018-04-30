@@ -6,3 +6,5 @@ pkg/
 .exports
 .volume_id
 *.pem
+/.bundle
+/vendor/bundle
