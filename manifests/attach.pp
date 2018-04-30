@@ -11,10 +11,11 @@ define ebs::attach (
   }
 
   $volume_id_file = "/var/lib/puppet/.ebs__${name}__volume_id"
-  $aws_region = inline_template("<%= @ec2_placement_availability_zone.gsub(/.$/,'') %>")
+  $aws_zone = $::facts['ec2_metadata']['placement']['availability-zone']
+  $aws_region = chop($aws_zone)
 
   exec { "EBS volume ${name}: obtaining the volume id":
-    command     => "aws ec2 describe-volumes --color off --filters Name=availability-zone,Values=${ec2_placement_availability_zone} Name=status,Values=available Name='tag:${tag_key}',Values=${name} --query 'Volumes[*].[VolumeId]' --output text | head -n 1 > ${volume_id_file}",
+    command     => "aws ec2 describe-volumes --color off --filters Name=availability-zone,Values=${aws_zone} Name=status,Values=available Name='tag:${tag_key}',Values=${name} --query 'Volumes[*].[VolumeId]' --output text | head -n 1 > ${volume_id_file}",
     unless      => "test -s ${volume_id_file}",
     environment => "AWS_DEFAULT_REGION=${aws_region}"
   } ->
@@ -24,7 +25,7 @@ define ebs::attach (
   } ->
 
   exec { "EBS volume ${name}: attaching the volume":
-    command     => "aws ec2 attach-volume --volume-id `cat ${volume_id_file}` --instance-id $ec2_instance_id --device $device",
+    command     => "aws ec2 attach-volume --volume-id `cat ${volume_id_file}` --instance-id ${::facts['ec2_metadata']['instance-id']} --device $device",
     environment => "AWS_DEFAULT_REGION=${aws_region}",
     unless      => "test -b ${device_attached}",
   } ->
