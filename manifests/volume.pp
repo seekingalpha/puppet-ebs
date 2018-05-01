@@ -5,7 +5,7 @@ define ebs::volume (
   $format_options  = undef,
   $mount_options   = 'noatime',
   $mount_dir       = '/mnt',
-  $tag_key         = 'name',
+  $tag_key         = 'Name',
 ) {
 
   require ebs

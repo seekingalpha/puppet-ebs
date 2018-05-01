@@ -1,7 +1,7 @@
 define ebs::attach (
   $device          = '/dev/sdz',
   $device_attached = '/dev/xvdad',
-  $tag_key         = 'name',
+  $tag_key         = 'Name',
 ) {
 
   require ebs
