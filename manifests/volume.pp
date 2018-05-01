@@ -1,6 +1,6 @@
 define ebs::volume (
   $device          = '/dev/sdz',
-  $device_attached = '/dev/xvdad',
+  $device_attached = '/dev/xvdz',
   $format          = 'ext3',
   $format_options  = undef,
   $mount_options   = 'noatime',
